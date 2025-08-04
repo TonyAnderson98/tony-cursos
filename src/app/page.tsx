@@ -4,7 +4,9 @@ import { CourseList } from "@/app/components/CourseList";
 export default function Home() {
   return (
     <main className="container mx-auto py-8 px-4">
-      <CourseList />
+      <>
+        <CourseList />
+      </>
     </main>
   );
 }
