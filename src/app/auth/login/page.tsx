@@ -10,7 +10,7 @@ export default function AuthLogin() {
                     <p className="mt-2 text-sm text-gray-400">Faça login na sua conta</p>
                 </div>
 
-                <div className="bg-gray-800/50 rounded-2xl p-8 shadow-xl border border-gray-700/50">
+                        <div className="bg-gray-800/50 rounded-2xl p-8 shadow-xl border border-gray-700/50">
                     <form action='#' method="post" className="space-y-6">
                         <div>
                             <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-1">
