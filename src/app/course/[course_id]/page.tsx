@@ -2,7 +2,7 @@
 
 import { useParams } from 'next/navigation';
 import { useCourse } from "@/hooks/useCourse";
-import LessonsTree from '@/app/components/lessonsTree';
+import LessonsTree from '@/app/components/LessonsTree';
 
 export default function Course() {
     const params = useParams();
@@ -31,11 +31,16 @@ export default function Course() {
                         Vídeo aqui
                     </div>
 
-                    <aside className='w-[400px] max-h-[700px] overflow-auto border border-gray-600 rounded-lg'>
+                    <aside className='w-[500px] max-h-[700px] overflow-auto border border-gray-600 rounded-lg'>
                         <LessonsTree />
                     </aside>
                 </section>
             </div>
+
+
+
+
+
 
             <section>
                 <h1>Título da aula escrita</h1>
