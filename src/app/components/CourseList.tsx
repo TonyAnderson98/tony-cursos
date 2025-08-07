@@ -1,8 +1,10 @@
 'use client';
 
 import { useCourses } from '@/hooks/useCourses';
+import { useRouter } from 'next/navigation';
 
 export function CourseList() {
+    const router = useRouter();
     const { courses, loading, error } = useCourses();
 
     if (loading) return (
@@ -29,6 +31,7 @@ export function CourseList() {
                     <div
                         key={course.course_id}
                         className="relative w-[250px] h-[500px] rounded-sm overflow-hidden hover:scale-105 transition-all duration-300 group hover:cursor-pointer"
+                        onClick={() => router.push(`/course/${course.course_id}`)}
                     >
                         <img
                             src="/cover.png"
