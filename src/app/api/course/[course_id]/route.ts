@@ -41,6 +41,7 @@ export async function GET(
                         'lesson_id', l.lesson_id,
                         'lesson_name', l.lesson_name,
                         'lesson_description', l.lesson_description,
+                        'lesson_link', l.lesson_link,
                         'created_at', l.created_at,
                         'updated_at', l.updated_at
                     ) ORDER BY l.created_at

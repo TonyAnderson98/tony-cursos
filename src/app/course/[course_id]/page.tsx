@@ -1,14 +1,21 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-import { useCourse } from "@/hooks/useCourse";
+import { useCourse, Lesson } from "@/hooks/useCourse";
 import LessonsTree from '@/app/components/LessonsTree';
+import { useMemo, useState } from 'react';
 
 export default function Course() {
     const params = useParams();
     const course_id = Number(params.course_id);
 
     const { data, isLoading, error } = useCourse(course_id);
+    const allLessons = useMemo(() => data?.chapters?.flatMap(c => c.lessons) ?? [], [data]);
+    const [selectedLessonId, setSelectedLessonId] = useState<number | null>(allLessons[0]?.lesson_id ?? null);
+
+    const selectedLesson: Lesson | undefined = useMemo(() => {
+        return allLessons.find(l => l.lesson_id === selectedLessonId) ?? allLessons[0];
+    }, [allLessons, selectedLessonId]);
 
     if (isLoading) return (
         <div><span>Carregando curso...</span></div>
@@ -28,11 +35,28 @@ export default function Course() {
 
                 <section className='flex gap-4'>
                     <div className="w-[1280px] h-[680px] bg-gray-800 flex justify-center items-center">
-                        Vídeo aqui
+                        {(() => {
+                            const id = selectedLesson?.lesson_link; // armazenado no banco apenas o ID
+                            if (!id) return <span>Vídeo aqui</span>;
+                            const previewUrl = `https://drive.google.com/file/d/${id}/preview`;
+                            return (
+                                <iframe
+                                    key={previewUrl}
+                                    className="w-full h-full"
+                                    src={previewUrl}
+                                    title={selectedLesson?.lesson_name}
+                                    allow="autoplay; fullscreen; picture-in-picture"
+                                    allowFullScreen
+                                />
+                            );
+                        })()}
                     </div>
 
                     <aside className='w-[500px] max-h-[700px] overflow-auto border border-gray-600 rounded-lg'>
-                        <LessonsTree />
+                        <LessonsTree
+                            onSelectLesson={(lessonId) => setSelectedLessonId(lessonId)}
+                            selectedLessonId={selectedLesson?.lesson_id ?? null}
+                        />
                     </aside>
                 </section>
             </div>
@@ -42,16 +66,11 @@ export default function Course() {
 
 
 
+
+
             <section>
-                <h1>Título da aula escrita</h1>
-                <ul>
-                    <li>Morbi in sem quis dui placerat ornare.</li>
-                    <li>Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue.</li>
-                    <li>Phasellus ultrices nulla quis nibh. Quisque a lectus.</li>
-                    <li>Pellentesque fermentum dolor. Aliquam quam lectus, facilisis auctor, ultrices ut.</li>
-                </ul>
-
-
+                <h1 className='text-2xl font-semibold'>{selectedLesson?.lesson_name ?? 'Selecione uma aula'}</h1>
+                <p className='mt-2 text-gray-300'>{selectedLesson?.lesson_description}</p>
             </section>
         </>
     )

@@ -2,21 +2,22 @@
 
 import { useEffect, useState } from "react";
 
-interface Lesson {
+export interface Lesson {
     lesson_id: number;
     lesson_name: string;
     lesson_description: string;
+    lesson_link: string;
     created_at: string;
     updated_at: string;
 }
 
-interface Chapter {
+export interface Chapter {
     chapter_id: number;
     chapter_name: string;
     lessons: Lesson[];
 }
 
-interface CourseData {
+export interface CourseData {
     course_id: number;
     course_name: string;
     course_description: string;
