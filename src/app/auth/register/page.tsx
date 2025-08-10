@@ -1,6 +1,48 @@
+'use client';
+
+import { useState } from 'react';
+import { useAuth } from '../../../hooks/useAuth';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import Input from '@/app/components/form/input';
 
 export default function Register() {
+	const [name, setName] = useState('');
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
+	const [passwordConfirm, setPasswordConfirm] = useState('');
+	const [loading, setLoading] = useState(false);
+	const [error, setError] = useState('');
+	const { register } = useAuth();
+	const router = useRouter();
+
+	const handleSubmit = async (e: React.FormEvent) => {
+		e.preventDefault();
+		setLoading(true);
+		setError('');
+
+		if (password !== passwordConfirm) {
+			setError('As senhas não coincidem');
+			setLoading(false);
+			return;
+		}
+
+		if (password.length < 6) {
+			setError('A senha deve ter pelo menos 6 caracteres');
+			setLoading(false);
+			return;
+		}
+
+		const result = await register(name, email, password);
+
+		if (result.success) {
+			router.push('/');
+		} else {
+			setError(result.message);
+		}
+
+		setLoading(false);
+	};
 	return (
 		<>
 			<div className="min-h-screen flex flex-col gap-8 items-center justify-center p-4">
@@ -25,9 +67,13 @@ export default function Register() {
 						<p className="text-sm text-gray-400">Crie uma conta</p>
 					</div>
 					<div className="bg-gray-800/50 rounded-2xl p-8 shadow-xl border border-gray-700/50 ">
+						{error && (
+							<div className="mb-4 p-3 bg-red-500/20 border border-red-500/50 rounded-lg text-red-300 text-sm">
+								{error}
+							</div>
+						)}
 						<form
-							action="#"
-							method="post"
+							onSubmit={handleSubmit}
 							className="flex flex-col gap-4"
 						>
 							<div>
@@ -42,6 +88,9 @@ export default function Register() {
 									id={'name'}
 									name={'name'}
 									placeholder={'Seu nome'}
+									value={name}
+									onChange={e => setName(e.target.value)}
+									required
 								/>
 							</div>
 							<div>
@@ -56,6 +105,8 @@ export default function Register() {
 									id={'email'}
 									placeholder={'seu@mail.com'}
 									name={'email'}
+									value={email}
+									onChange={e => setEmail(e.target.value)}
 									required
 								/>
 							</div>
@@ -71,6 +122,8 @@ export default function Register() {
 									id={'password'}
 									placeholder={'* * * * * *'}
 									name={'password'}
+									value={password}
+									onChange={e => setPassword(e.target.value)}
 									required
 								/>
 							</div>
@@ -87,6 +140,10 @@ export default function Register() {
 									id={'password_confirm'}
 									placeholder={'* * * * * *'}
 									name={'password_confirm'}
+									value={passwordConfirm}
+									onChange={e =>
+										setPasswordConfirm(e.target.value)
+									}
 									required
 								/>
 							</div>
@@ -94,9 +151,12 @@ export default function Register() {
 							<div>
 								<button
 									type="submit"
-									className="w-full flex justify-center py-3 px-4 rounded-lg bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 text-white font-medium shadow-lg hover:shadow-indigo-500/20 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 focus:ring-offset-gray-900"
+									disabled={loading}
+									className="w-full flex justify-center py-3 px-4 rounded-lg bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 text-white font-medium shadow-lg hover:shadow-indigo-500/20 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 focus:ring-offset-gray-900 disabled:opacity-50 disabled:cursor-not-allowed"
 								>
-									Criar conta
+									{loading
+										? 'Criando conta...'
+										: 'Criar conta'}
 								</button>
 							</div>
 						</form>
@@ -151,12 +211,12 @@ export default function Register() {
 
 					<p className="mt-8 text-center text-sm text-gray-400">
 						Já possui uma conta?{' '}
-						<a
+						<Link
 							href="/auth/login"
 							className="font-medium text-indigo-400 hover:text-indigo-300 transition-colors duration-200"
 						>
 							faça login
-						</a>
+						</Link>
 					</p>
 				</div>
 			</div>
