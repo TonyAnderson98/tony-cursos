@@ -1,0 +1,39 @@
+# Semantic Commit Message Format
+# 
+# <type>(<scope>): <subject>
+# 
+# <body>
+# 
+# <footer>
+# 
+# Types:
+#   feat     (new feature for the user, not a new feature for build script)
+#   fix      (bug fix for the user, not a fix to a build script)
+#   docs     (changes to the documentation)
+#   style    (formatting, missing semi colons, etc; no production code change)
+#   refactor (refactoring production code, eg. renaming a variable)
+#   test     (adding missing tests, refactoring tests; no production code change)
+#   chore    (updating grunt tasks etc; no production code change)
+#   ci       (changes to CI configuration files and scripts)
+#   build    (changes that affect the build system or external dependencies)
+#   revert   (revert to a previous commit)
+# 
+# Examples:
+#   feat(auth): add login functionality
+#   fix(api): resolve user data fetching issue
+#   docs(readme): update installation instructions
+#   style(components): format code with prettier
+#   refactor(utils): simplify date formatting function
+#   test(api): add unit tests for user service
+#   chore(deps): update dependencies
+#   ci(github): add automated testing workflow
+#   build(webpack): optimize bundle size
+#   revert: revert to previous commit hash
+# 
+# Rules:
+#   - Use lowercase for type and subject
+#   - No period at the end of subject
+#   - Use imperative mood ("add" not "added")
+#   - Keep subject under 50 characters
+#   - Separate subject from body with blank line
+#   - Use body to explain what and why vs. how
